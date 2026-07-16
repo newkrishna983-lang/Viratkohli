@@ -25,6 +25,7 @@ import m3u8
 from urllib.parse import urljoin
 from vars import *  # Add this import
 from db import Database
+from pyrogram.enums import ParseMode  # ✅ Import ParseMode
 
 
 
@@ -453,8 +454,8 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
 
         await prog.delete(True)  # ⏳ Remove previous progress message
 
-        reply1 = await bot.send_message(channel_id, f" **Uploading Video:**\n<blockquote>{name}</blockquote>", parse_mode="html")
-        reply = await m.reply_text(f"🖼 **Generating Thumbnail:**\n<blockquote>{name}</blockquote>", parse_mode="html")
+        reply1 = await bot.send_message(channel_id, f" **Uploading Video:**\n<blockquote>{name}</blockquote>", parse_mode=ParseMode.HTML)
+        reply = await m.reply_text(f"🖼 **Generating Thumbnail:**\n<blockquote>{name}</blockquote>", parse_mode=ParseMode.HTML)
 
         file_size_mb = os.path.getsize(filename) / (1024 * 1024)
         notify_split = None
@@ -477,7 +478,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
                     duration=dur,
                     progress=progress_bar,
                     progress_args=(reply, start_time),
-                    parse_mode="html"
+                    parse_mode=ParseMode.HTML
                 )
             except Exception:
                 sent_message = await bot.send_document(
@@ -486,7 +487,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
                     caption=cc,
                     progress=progress_bar,
                     progress_args=(reply, start_time),
-                    parse_mode="html"
+                    parse_mode=ParseMode.HTML
                 )
 
             # ✅ Cleanup
@@ -500,7 +501,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
             notify_split = await m.reply_text(
                 f"⚠️ The video is larger than 2GB ({human_readable_size(os.path.getsize(filename))})\n"
                 f"⏳ Splitting into parts before upload...",
-                parse_mode="html"
+                parse_mode=ParseMode.HTML
             )
 
             parts = split_large_video(filename)
@@ -514,7 +515,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
                     part_caption = f"{cc}\n\n📦 Part {part_num} of {total_parts}"
                     part_filename = f"{name}_Part{part_num}.mp4"
 
-                    upload_msg = await m.reply_text(f"📤 Uploading Part {part_num}/{total_parts}...", parse_mode="html")
+                    upload_msg = await m.reply_text(f"📤 Uploading Part {part_num}/{total_parts}...", parse_mode=ParseMode.HTML)
 
                     try:
                         msg_obj = await bot.send_video(
@@ -529,7 +530,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
                             duration=part_dur,
                             progress=progress_bar,
                             progress_args=(upload_msg, time.time()),
-                            parse_mode="html"
+                            parse_mode=ParseMode.HTML
                         )
                         if first_part_message is None:
                             first_part_message = msg_obj
@@ -541,7 +542,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
                             file_name=part_filename,
                             progress=progress_bar,
                             progress_args=(upload_msg, time.time()),
-                            parse_mode="html"
+                            parse_mode=ParseMode.HTML
                         )
                         if first_part_message is None:
                             first_part_message = msg_obj
@@ -555,7 +556,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
 
             # ✅ Final messages
             if len(parts) > 1:
-                await m.reply_text("✅ Large video successfully uploaded in multiple parts!", parse_mode="html")
+                await m.reply_text("✅ Large video successfully uploaded in multiple parts!", parse_mode=ParseMode.HTML)
 
             # Cleanup after split
             await reply.delete(True)
