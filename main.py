@@ -10,7 +10,7 @@ import shutil
 import zipfile
 import urllib
 import subprocess
-from datetime import datetime, timedelta  # ✅ सही import
+from datetime import datetime, timedelta
 from base64 import b64encode, b64decode
 from subprocess import getstatusoutput
 
@@ -55,6 +55,7 @@ from pyrogram.errors import (
     RPCError
 )
 from pyrogram.errors.exceptions.bad_request_400 import MessageNotModified
+from pyrogram.enums import ParseMode  # ✅ Import ParseMode
 
 # 🧠 Bot Modules
 import auth
@@ -232,7 +233,7 @@ async def cookies_handler(client: Client, m: Message):
 @bot.on_message(filters.command(["t2t"]))
 async def text_to_txt(client, message: Message):
     user_id = str(message.from_user.id)
-    editable = await message.reply_text(f"<blockquote>Welcome to the Text to .txt Converter!\nSend the **text** for convert into a `.txt` file.</blockquote>", parse_mode="html")
+    editable = await message.reply_text(f"<blockquote>Welcome to the Text to .txt Converter!\nSend the **text** for convert into a `.txt` file.</blockquote>", parse_mode=ParseMode.HTML)
     input_message: Message = await bot.listen(message.chat.id)
     if not input_message.text:
         await message.reply_text("**Send valid text data**")
@@ -241,7 +242,7 @@ async def text_to_txt(client, message: Message):
     text_data = input_message.text.strip()
     await input_message.delete()
     
-    await editable.edit("**🔄 Send file name or send /d for filename**", parse_mode="html")
+    await editable.edit("**🔄 Send file name or send /d for filename**", parse_mode=ParseMode.HTML)
     inputn: Message = await bot.listen(message.chat.id)
     raw_textn = inputn.text
     await inputn.delete()
@@ -257,7 +258,7 @@ async def text_to_txt(client, message: Message):
     with open(txt_file, 'w') as f:
         f.write(text_data)
         
-    await message.reply_document(document=txt_file, caption=f"`{custom_file_name}.txt`\n\n<blockquote>You can now download your content! 📥</blockquote>", parse_mode="html")
+    await message.reply_document(document=txt_file, caption=f"`{custom_file_name}.txt`\n\n<blockquote>You can now download your content! 📥</blockquote>", parse_mode=ParseMode.HTML)
     os.remove(txt_file)
 
 UPLOAD_FOLDER = '/path/to/upload/folder'
@@ -303,7 +304,7 @@ async def start(bot: Client, m: Message):
                 await m.reply_photo(
                     photo=photologo,
                     caption="**Mʏ Nᴀᴍᴇ [Ꮢᥲ𝚍ԩᶓ⠀ᥫ᭡፝֟፝֟](https://t.me/HelyByKeshav1_bot)\n\nYᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ᴀᴄᴄᴇꜱꜱ ᴛᴏ ᴜꜱᴇ ᴛʜɪꜱ ʙᴏᴛ\nCᴏɴᴛᴀᴄᴛ [°𓏲кяιѕнηα⋆🌿](https://t.me/HelyByKeshav1_bot) ғᴏʀ ᴀᴄᴄᴇꜱꜱ**",
-                    parse_mode="html",
+                    parse_mode=ParseMode.HTML,
                     reply_markup=InlineKeyboardMarkup([
     [
         InlineKeyboardButton("°𓏲кяιѕнηα⋆🌿", url="https://t.me/HelyByKeshav1_bot")
@@ -331,7 +332,7 @@ async def start(bot: Client, m: Message):
                     f"─ ─ ─ ─ ─ ─ ─ ─ ─\n\n"
                     f"💫 **𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐁𝐲** [°𓏲кяιѕнηα⋆🌿](https://t.me/HelyByKeshav1_bot)"
                 ),
-                parse_mode="html",
+                parse_mode=ParseMode.HTML,
                 reply_markup=InlineKeyboardMarkup([
                     [
                         InlineKeyboardButton("✨ Features", callback_data="features"),
@@ -364,7 +365,7 @@ async def unauthorized_handler(client, message: Message):
         "<b>Mʏ Nᴀᴍᴇ [Ꮢᥲ𝚍ԩᶓ⠀ᥫ᭡፝֟፝֟]</b>\n\n"
         "<blockquote>You need to have an active subscription to use this bot.\n"
         "Please contact admin to get premium access.</blockquote>",
-        parse_mode="html",
+        parse_mode=ParseMode.HTML,
         reply_markup=InlineKeyboardMarkup([[
             InlineKeyboardButton("💫 Get Premium Access", url="https://t.me/HelyByKeshav1_bot")
         ]])
@@ -374,7 +375,7 @@ async def unauthorized_handler(client, message: Message):
 async def id_command(client, message: Message):
     chat_id = message.chat.id
     await message.reply_text(
-        f"<blockquote>The ID of this chat id is:</blockquote>\n`{chat_id}`", parse_mode="html"
+        f"<blockquote>The ID of this chat id is:</blockquote>\n`{chat_id}`", parse_mode=ParseMode.HTML
     )
 
 
@@ -401,7 +402,7 @@ async def send_logs(client: Client, m: Message):
             await m.reply_document(document=file)
             await sent.delete()
     except Exception as e:
-        await m.reply_text(f"**Error sending logs:**\n<blockquote>{e}</blockquote>", parse_mode="html")
+        await m.reply_text(f"**Error sending logs:**\n<blockquote>{e}</blockquote>", parse_mode=ParseMode.HTML)
 
 
 
@@ -422,16 +423,16 @@ async def txt_handler(bot: Client, m: Message):
         "__Hii, I am Ꮢᥲ𝚍ԩᶓ⠀ᥫ᭡፝֟፝֟__\n"
         "<blockquote><i>Send Me Your text file which enclude Name with url...\nE.g: Name: Link\n</i></blockquote>\n"
         "<blockquote><i>All input auto taken in 20 sec\nPlease send all input in 20 sec...\n</i></blockquote>",
-        parse_mode="html"
+        parse_mode=ParseMode.HTML
     )
     input: Message = await bot.listen(editable.chat.id)
     
     if not input.document:
-        await m.reply_text("<b>❌ Please send a text file!</b>", parse_mode="html")
+        await m.reply_text("<b>❌ Please send a text file!</b>", parse_mode=ParseMode.HTML)
         return
         
     if not input.document.file_name.endswith('.txt'):
-        await m.reply_text("<b>❌ Please send a .txt file!</b>", parse_mode="html")
+        await m.reply_text("<b>❌ Please send a .txt file!</b>", parse_mode=ParseMode.HTML)
         return
         
     x = await input.download()
@@ -492,11 +493,11 @@ async def txt_handler(bot: Client, m: Message):
         print(f"Found links: {len(links)}")
         
     except UnicodeDecodeError:
-        await m.reply_text("<b>❌ File encoding error! Please make sure the file is saved with UTF-8 encoding.</b>", parse_mode="html")
+        await m.reply_text("<b>❌ File encoding error! Please make sure the file is saved with UTF-8 encoding.</b>", parse_mode=ParseMode.HTML)
         os.remove(x)
         return
     except Exception as e:
-        await m.reply_text(f"<b>🔹Error reading file: {str(e)}</b>", parse_mode="html")
+        await m.reply_text(f"<b>🔹Error reading file: {str(e)}</b>", parse_mode=ParseMode.HTML)
         os.remove(x)
         return
     
@@ -507,7 +508,7 @@ async def txt_handler(bot: Client, m: Message):
     f"ᴍᴘᴅ : {mpd_count}   ʏᴛ : {yt_count}\n"
     f"Oᴛʜᴇʀꜱ : {other_count}\n\n"
     f"Send Your Index File ID Between 1-{len(links)} .**",
-    parse_mode="html"
+    parse_mode=ParseMode.HTML
 )
     
     chat_id = editable.chat.id
@@ -520,14 +521,14 @@ async def txt_handler(bot: Client, m: Message):
         raw_text = '1'
     
     if int(raw_text) > len(links) :
-        await editable.edit(f"**🔹Enter number in range of Index (01-{len(links)})**", parse_mode="html")
+        await editable.edit(f"**🔹Enter number in range of Index (01-{len(links)})**", parse_mode=ParseMode.HTML)
         processing_request = False
-        await m.reply_text("**🔹Exiting Task......  **", parse_mode="html")
+        await m.reply_text("**🔹Exiting Task......  **", parse_mode=ParseMode.HTML)
         return
     
     chat_id = editable.chat.id
     timeout_duration = 3 if auto_flags.get(chat_id) else 20
-    await editable.edit(f"**1. Enter Batch Name\n2.Send /d For TXT Batch Name**", parse_mode="html")
+    await editable.edit(f"**1. Enter Batch Name\n2.Send /d For TXT Batch Name**", parse_mode=ParseMode.HTML)
     try:
         input1: Message = await bot.listen(editable.chat.id, timeout=timeout_duration)
         raw_text0 = input1.text
@@ -542,7 +543,7 @@ async def txt_handler(bot: Client, m: Message):
     
     chat_id = editable.chat.id
     timeout_duration = 3 if auto_flags.get(chat_id) else 20
-    await editable.edit("**🎞️  Eɴᴛᴇʀ  Rᴇꜱᴏʟᴜᴛɪᴏɴ\n\n╭━━⪼  `360`\n┣━━⪼  `480`\n┣━━⪼  `720`\n╰━━⪼  `1080`**", parse_mode="html")
+    await editable.edit("**🎞️  Eɴᴛᴇʀ  Rᴇꜱᴏʟᴜᴛɪᴏɴ\n\n╭━━⪼  `360`\n┣━━⪼  `480`\n┣━━⪼  `720`\n╰━━⪼  `1080`**", parse_mode=ParseMode.HTML)
     try:
         input2: Message = await bot.listen(editable.chat.id, timeout=timeout_duration)
         raw_text2 = input2.text
@@ -570,7 +571,7 @@ async def txt_handler(bot: Client, m: Message):
     chat_id = editable.chat.id
     timeout_duration = 3 if auto_flags.get(chat_id) else 20
 
-    await editable.edit("**1. Send A Text For Watermark\n2. Send /d for no watermark & fast dwnld**", parse_mode="html")
+    await editable.edit("**1. Send A Text For Watermark\n2. Send /d for no watermark & fast dwnld**", parse_mode=ParseMode.HTML)
     try:
         inputx: Message = await bot.listen(editable.chat.id, timeout=timeout_duration)
         raw_textx = inputx.text
@@ -584,7 +585,7 @@ async def txt_handler(bot: Client, m: Message):
     else:
         watermark = raw_textx
     
-    await editable.edit(f"**1. Send Your Name For Caption Credit\n2. Send /d For default Credit **", parse_mode="html")
+    await editable.edit(f"**1. Send Your Name For Caption Credit\n2. Send /d For default Credit **", parse_mode=ParseMode.HTML)
     try:
         input3: Message = await bot.listen(editable.chat.id, timeout=timeout_duration)
         raw_text3 = input3.text
@@ -600,7 +601,7 @@ async def txt_handler(bot: Client, m: Message):
         CR = raw_text3
     chat_id = editable.chat.id
     timeout_duration = 3 if auto_flags.get(chat_id) else 20
-    await editable.edit(f"**1. Send PW Token For MPD urls\n 2. Send /d For Others **", parse_mode="html")
+    await editable.edit(f"**1. Send PW Token For MPD urls\n 2. Send /d For Others **", parse_mode=ParseMode.HTML)
     try:
         input4: Message = await bot.listen(editable.chat.id, timeout=timeout_duration)
         raw_text4 = input4.text
@@ -609,7 +610,7 @@ async def txt_handler(bot: Client, m: Message):
         raw_text4 = '/d'
     chat_id = editable.chat.id
     timeout_duration = 3 if auto_flags.get(chat_id) else 20
-    await editable.edit("**1. Send A Image For Thumbnail\n2. Send /d For default Thumbnail\n3. Send /skip For Skipping**", parse_mode="html")
+    await editable.edit("**1. Send A Image For Thumbnail\n2. Send /d For default Thumbnail\n3. Send /skip For Skipping**", parse_mode=ParseMode.HTML)
     thumb = "/d"
     try:
         input6 = await bot.listen(chat_id=m.chat.id, timeout=timeout_duration)
@@ -621,35 +622,35 @@ async def txt_handler(bot: Client, m: Message):
             try:
                 await bot.download_media(message=input6.photo, file_name=temp_file)
                 thumb = temp_file
-                await editable.edit("**✅ Custom thumbnail saved successfully!**", parse_mode="html")
+                await editable.edit("**✅ Custom thumbnail saved successfully!**", parse_mode=ParseMode.HTML)
                 await asyncio.sleep(1)
             except Exception as e:
                 print(f"Error downloading thumbnail: {str(e)}")
-                await editable.edit("**⚠️ Failed to save thumbnail! Using default.**", parse_mode="html")
+                await editable.edit("**⚠️ Failed to save thumbnail! Using default.**", parse_mode=ParseMode.HTML)
                 thumb = "/d"
                 await asyncio.sleep(1)
         elif input6.text:
             if input6.text == "/d":
                 thumb = "/d"
-                await editable.edit("**📰 Using default thumbnail.**", parse_mode="html")
+                await editable.edit("**📰 Using default thumbnail.**", parse_mode=ParseMode.HTML)
                 await asyncio.sleep(1)
             elif input6.text == "/skip":
                 thumb = "no"
-                await editable.edit("**♻️ Skipping thumbnail.**", parse_mode="html")
+                await editable.edit("**♻️ Skipping thumbnail.**", parse_mode=ParseMode.HTML)
                 await asyncio.sleep(1)
             else:
-                await editable.edit("**⚠️ Invalid input! Using default thumbnail.**", parse_mode="html")
+                await editable.edit("**⚠️ Invalid input! Using default thumbnail.**", parse_mode=ParseMode.HTML)
                 await asyncio.sleep(1)
         await input6.delete(True)
     except asyncio.TimeoutError:
-        await editable.edit("**⚠️ Timeout! Using default thumbnail.**", parse_mode="html")
+        await editable.edit("**⚠️ Timeout! Using default thumbnail.**", parse_mode=ParseMode.HTML)
         await asyncio.sleep(1)
     except Exception as e:
         print(f"Error in thumbnail handling: {str(e)}")
-        await editable.edit("**⚠️ Error! Using default thumbnail.**", parse_mode="html")
+        await editable.edit("**⚠️ Error! Using default thumbnail.**", parse_mode=ParseMode.HTML)
         await asyncio.sleep(1)
  
-    await editable.edit("__**📢 Provide the Channel ID or send /d__\n\n<blockquote>🔹Send Your Channel ID where you want upload files.\n\nEx : -100XXXXXXXXX</blockquote>\n**", parse_mode="html")
+    await editable.edit("__**📢 Provide the Channel ID or send /d__\n\n<blockquote>🔹Send Your Channel ID where you want upload files.\n\nEx : -100XXXXXXXXX</blockquote>\n**", parse_mode=ParseMode.HTML)
     try:
         input7: Message = await bot.listen(editable.chat.id, timeout=timeout_duration)
         raw_text7 = input7.text
@@ -665,19 +666,19 @@ async def txt_handler(bot: Client, m: Message):
 
     try:
         if raw_text == "1":
-            batch_message = await bot.send_message(chat_id=channel_id, text=f"<blockquote><b>🎯Target Batch : {b_name}</b></blockquote>", parse_mode="html")
+            batch_message = await bot.send_message(chat_id=channel_id, text=f"<blockquote><b>🎯Target Batch : {b_name}</b></blockquote>", parse_mode=ParseMode.HTML)
             if "/d" not in raw_text7:
-                await bot.send_message(chat_id=m.chat.id, text=f"<blockquote><b><i>🎯Target Batch : {b_name}</i></b></blockquote>\n\n🔄 Your Task is under processing, please check your Set Channel📱. Once your task is complete, I will inform you 📩", parse_mode="html")
-                await bot.send_message(chat_id=m.chat.id, text=f"<blockquote><b><i>🎯Target Batch : {b_name}</i></b></blockquote>\n\n🔄 Your Task is under processing, please check your Set Channel📱. Once your task is complete, I will inform you 📩", parse_mode="html")
+                await bot.send_message(chat_id=m.chat.id, text=f"<blockquote><b><i>🎯Target Batch : {b_name}</i></b></blockquote>\n\n🔄 Your Task is under processing, please check your Set Channel📱. Once your task is complete, I will inform you 📩", parse_mode=ParseMode.HTML)
+                await bot.send_message(chat_id=m.chat.id, text=f"<blockquote><b><i>🎯Target Batch : {b_name}</i></b></blockquote>\n\n🔄 Your Task is under processing, please check your Set Channel📱. Once your task is complete, I will inform you 📩", parse_mode=ParseMode.HTML)
                 await bot.pin_chat_message(channel_id, batch_message.id)
                 message_id = batch_message.id + 1
                 await bot.delete_messages(channel_id, message_id)
                 await bot.pin_chat_message(channel_id, message_id)
         else:
              if "/d" not in raw_text7:
-                await bot.send_message(chat_id=m.chat.id, text=f"<blockquote><b><i>🎯Target Batch : {b_name}</i></b></blockquote>\n\n🔄 Your Task is under processing, please check your Set Channel📱. Once your task is complete, I will inform you 📩", parse_mode="html")
+                await bot.send_message(chat_id=m.chat.id, text=f"<blockquote><b><i>🎯Target Batch : {b_name}</i></b></blockquote>\n\n🔄 Your Task is under processing, please check your Set Channel📱. Once your task is complete, I will inform you 📩", parse_mode=ParseMode.HTML)
     except Exception as e:
-        await m.reply_text(f"**Fail Reason »**\n<blockquote><i>{e}</i></blockquote>\n\n✦𝐁𝐨𝐭 𝐌𝐚𝐝𝐞 𝐁𝐲 ✦ {CREDIT}🌟`", parse_mode="html")
+        await m.reply_text(f"**Fail Reason »**\n<blockquote><i>{e}</i></blockquote>\n\n✦𝐁𝐨𝐭 𝐌𝐚𝐝𝐞 𝐁𝐲 ✦ {CREDIT}🌟`", parse_mode=ParseMode.HTML)
 
     failed_count = 0
     count =int(raw_text)    
@@ -926,7 +927,7 @@ async def txt_handler(bot: Client, m: Message):
                 if "drive" in url:
                     try:
                         ka = await helper.download(url, name)
-                        copy = await bot.send_document(chat_id=channel_id, document=ka, caption=cc1, parse_mode="html")
+                        copy = await bot.send_document(chat_id=channel_id, document=ka, caption=cc1, parse_mode=ParseMode.HTML)
                         count+=1
                         os.remove(ka)
                     except FloodWait as e:
@@ -952,7 +953,7 @@ async def txt_handler(bot: Client, m: Message):
                                     with open(f'{name}.pdf', 'wb') as file:
                                         file.write(response.content)
                                     await asyncio.sleep(retry_delay)
-                                    copy = await bot.send_document(chat_id=channel_id, document=f'{name}.pdf', caption=cc1, parse_mode="html")
+                                    copy = await bot.send_document(chat_id=channel_id, document=f'{name}.pdf', caption=cc1, parse_mode=ParseMode.HTML)
                                     count += 1
                                     os.remove(f'{name}.pdf')
                                     success = True
@@ -974,7 +975,7 @@ async def txt_handler(bot: Client, m: Message):
                             cmd = f'yt-dlp -o "{name}.pdf" "{url}"'
                             download_cmd = f"{cmd} -R 25 --fragment-retries 25"
                             os.system(download_cmd)
-                            copy = await bot.send_document(chat_id=channel_id, document=f'{name}.pdf', caption=cc1, parse_mode="html")
+                            copy = await bot.send_document(chat_id=channel_id, document=f'{name}.pdf', caption=cc1, parse_mode=ParseMode.HTML)
                             count += 1
                             os.remove(f'{name}.pdf')
                         except FloodWait as e:
@@ -986,7 +987,7 @@ async def txt_handler(bot: Client, m: Message):
                     try:
                         await helper.pdf_download(f"{api_url}utkash-ws?url={url}&authorization={api_token}",f"{name}.html")
                         time.sleep(1)
-                        await bot.send_document(chat_id=channel_id, document=f"{name}.html", caption=cchtml, parse_mode="html")
+                        await bot.send_document(chat_id=channel_id, document=f"{name}.html", caption=cchtml, parse_mode=ParseMode.HTML)
                         os.remove(f'{name}.html')
                         count += 1
                     except FloodWait as e:
@@ -1000,7 +1001,7 @@ async def txt_handler(bot: Client, m: Message):
                         cmd = f'yt-dlp -o "{name}.{ext}" "{url}"'
                         download_cmd = f"{cmd} -R 25 --fragment-retries 25"
                         os.system(download_cmd)
-                        copy = await bot.send_photo(chat_id=channel_id, photo=f'{name}.{ext}', caption=ccimg, parse_mode="html")
+                        copy = await bot.send_photo(chat_id=channel_id, photo=f'{name}.{ext}', caption=ccimg, parse_mode=ParseMode.HTML)
                         count += 1
                         os.remove(f'{name}.{ext}')
                     except FloodWait as e:
@@ -1014,7 +1015,7 @@ async def txt_handler(bot: Client, m: Message):
                         cmd = f'yt-dlp -x --audio-format {ext} -o "{name}.{ext}" "{url}"'
                         download_cmd = f"{cmd} -R 25 --fragment-retries 25"
                         os.system(download_cmd)
-                        await bot.send_document(chat_id=channel_id, document=f'{name}.{ext}', caption=cc1, parse_mode="html")
+                        await bot.send_document(chat_id=channel_id, document=f'{name}.{ext}', caption=cc1, parse_mode=ParseMode.HTML)
                         os.remove(f'{name}.{ext}')
                     except FloodWait as e:
                         await m.reply_text(str(e))
@@ -1023,7 +1024,7 @@ async def txt_handler(bot: Client, m: Message):
                     
                 elif 'encrypted.m' in url:
                     Show = f"<i><b>Video APPX Encrypted Downloading</b></i>\n<blockquote><b>{str(count).zfill(3)}) {name1}</b></blockquote>"
-                    prog = await bot.send_message(channel_id, Show, disable_web_page_preview=True, parse_mode="html")
+                    prog = await bot.send_message(channel_id, Show, disable_web_page_preview=True, parse_mode=ParseMode.HTML)
                     try:
                         res_file = await helper.download_and_decrypt_video(url, cmd, name, appxkey)
                         filename = res_file  
@@ -1032,14 +1033,14 @@ async def txt_handler(bot: Client, m: Message):
                             await helper.send_vid(bot, m, cc, filename, thumb, name, prog, channel_id, watermark=watermark)
                             count += 1
                         else:
-                            await bot.send_message(channel_id, f'⚠️**Downloading Failed**⚠️\n**Name** =>> `{str(count).zfill(3)} {name1}`\n**Url** =>> {link0}\n\n<blockquote><i><b>Failed Reason: {str(e)}</b></i></blockquote>', disable_web_page_preview=True, parse_mode="html")
+                            await bot.send_message(channel_id, f'⚠️**Downloading Failed**⚠️\n**Name** =>> `{str(count).zfill(3)} {name1}`\n**Url** =>> {link0}\n\n<blockquote><i><b>Failed Reason: {str(e)}</b></i></blockquote>', disable_web_page_preview=True, parse_mode=ParseMode.HTML)
                             failed_count += 1
                             count += 1
                             continue
                         
                         
                     except Exception as e:
-                        await bot.send_message(channel_id, f'⚠️**Downloading Failed**⚠️\n**Name** =>> `{str(count).zfill(3)} {name1}`\n**Url** =>> {link0}\n\n<blockquote><i><b>Failed Reason: {str(e)}</b></i></blockquote>', disable_web_page_preview=True, parse_mode="html")
+                        await bot.send_message(channel_id, f'⚠️**Downloading Failed**⚠️\n**Name** =>> `{str(count).zfill(3)} {name1}`\n**Url** =>> {link0}\n\n<blockquote><i><b>Failed Reason: {str(e)}</b></i></blockquote>', disable_web_page_preview=True, parse_mode=ParseMode.HTML)
                         count += 1
                         failed_count += 1
                         continue
@@ -1047,7 +1048,7 @@ async def txt_handler(bot: Client, m: Message):
 
                 elif 'drmcdni' in url or 'drm/wv' in url or 'drm/common' in url:
                     Show = f"<i><b>📥 Fast Video Downloading</b></i>\n<blockquote><b>{str(count).zfill(3)}) {name1}</b></blockquote>"
-                    prog = await bot.send_message(channel_id, Show, disable_web_page_preview=True, parse_mode="html")
+                    prog = await bot.send_message(channel_id, Show, disable_web_page_preview=True, parse_mode=ParseMode.HTML)
                     res_file = await helper.decrypt_and_merge_video(mpd, keys_string, path, name, raw_text2)
                     filename = res_file
                     await prog.delete(True)
@@ -1058,7 +1059,7 @@ async def txt_handler(bot: Client, m: Message):
 
                 else:
                     Show = f"<i><b>📥 Fast Video Downloading</b></i>\n<blockquote><b>{str(count).zfill(3)}) {name1}</b></blockquote>"
-                    prog = await bot.send_message(channel_id, Show, disable_web_page_preview=True, parse_mode="html")
+                    prog = await bot.send_message(channel_id, Show, disable_web_page_preview=True, parse_mode=ParseMode.HTML)
                     res_file = await helper.download_video(url, cmd, name)
                     filename = res_file
                     await prog.delete(True)
@@ -1067,7 +1068,7 @@ async def txt_handler(bot: Client, m: Message):
                     time.sleep(1)
                 
             except Exception as e:
-                await bot.send_message(channel_id, f'⚠️**Downloading Failed**⚠️\n**Name** =>> `{str(count).zfill(3)} {name1}`\n**Url** =>> {link0}\n\n<blockquote><i><b>Failed Reason: {str(e)}</b></i></blockquote>', disable_web_page_preview=True, parse_mode="html")
+                await bot.send_message(channel_id, f'⚠️**Downloading Failed**⚠️\n**Name** =>> `{str(count).zfill(3)} {name1}`\n**Url** =>> {link0}\n\n<blockquote><i><b>Failed Reason: {str(e)}</b></i></blockquote>', disable_web_page_preview=True, parse_mode=ParseMode.HTML)
                 count += 1
                 failed_count += 1
                 continue
@@ -1100,12 +1101,12 @@ async def txt_handler(bot: Client, m: Message):
         
         "<i>ᴇxᴛʀᴀᴄᴛᴇᴅ ʙʏ °𓏲кяιѕнηα⋆🌿</i>"
     ),
-    parse_mode="html"
+    parse_mode=ParseMode.HTML
 )
 
     else:
-        await bot.send_message(channel_id, f"<b>-┈━═.•°✅ Completed ✅°•.═━┈-</b>\n<blockquote><b>🎯Batch Name : {b_name}</b></blockquote>\n<blockquote>🔗 Total URLs: {len(links)} \n┃   ┠🔴 Total Failed URLs: {failed_count}\n┃   ┠🟢 Total Successful URLs: {success_count}\n┃   ┃   ┠🎥 Total Video URLs: {video_count}\n┃   ┃   ┠📄 Total PDF URLs: {pdf_count}\n┃   ┃   ┠📸 Total IMAGE URLs: {img_count}</blockquote>\n", parse_mode="html")
-        await bot.send_message(m.chat.id, f"<blockquote><b>✅ Your Task is completed, please check your Set Channel📱</b></blockquote>", parse_mode="html")
+        await bot.send_message(channel_id, f"<b>-┈━═.•°✅ Completed ✅°•.═━┈-</b>\n<blockquote><b>🎯Batch Name : {b_name}</b></blockquote>\n<blockquote>🔗 Total URLs: {len(links)} \n┃   ┠🔴 Total Failed URLs: {failed_count}\n┃   ┠🟢 Total Successful URLs: {success_count}\n┃   ┃   ┠🎥 Total Video URLs: {video_count}\n┃   ┃   ┠📄 Total PDF URLs: {pdf_count}\n┃   ┃   ┠📸 Total IMAGE URLs: {img_count}</blockquote>\n", parse_mode=ParseMode.HTML)
+        await bot.send_message(m.chat.id, f"<blockquote><b>✅ Your Task is completed, please check your Set Channel📱</b></blockquote>", parse_mode=ParseMode.HTML)
 
 
 
@@ -1120,13 +1121,13 @@ async def text_handler(bot: Client, m: Message):
     if match:
         link = match.group(0)
     else:
-        await m.reply_text("<pre><code>Invalid link format.</code></pre>", parse_mode="html")
+        await m.reply_text("<pre><code>Invalid link format.</code></pre>", parse_mode=ParseMode.HTML)
         return
         
-    editable = await m.reply_text(f"<pre><code>**🔹Processing your link...\n🔁Please wait...⏳**</code></pre>", parse_mode="html")
+    editable = await m.reply_text(f"<pre><code>**🔹Processing your link...\n🔁Please wait...⏳**</code></pre>", parse_mode=ParseMode.HTML)
     await m.delete()
 
-    await editable.edit(f"╭━━━━❰ᴇɴᴛᴇʀ ʀᴇꜱᴏʟᴜᴛɪᴏɴ❱━━➣ \n┣━━⪼ send `144`\n┣━━⪼ send `240`\n┣━━⪼ send `360`\n┣━━⪼ send `480`\n┣━━⪼ send `720`\n┣━━⪼ send `1080`\n╰━━⌈⚡[`{CREDIT}`]⚡⌋━━➣ ", parse_mode="html")
+    await editable.edit(f"╭━━━━❰ᴇɴᴛᴇʀ ʀᴇꜱᴏʟᴜᴛɪᴏɴ❱━━➣ \n┣━━⪼ send `144`\n┣━━⪼ send `240`\n┣━━⪼ send `360`\n┣━━⪼ send `480`\n┣━━⪼ send `720`\n┣━━⪼ send `1080`\n╰━━⌈⚡[`{CREDIT}`]⚡⌋━━➣ ", parse_mode=ParseMode.HTML)
     input2: Message = await bot.listen(editable.chat.id, filters=filters.text & filters.user(m.from_user.id))
     raw_text2 = input2.text
     quality = f"{raw_text2}p"
