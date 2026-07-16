@@ -10,7 +10,7 @@ import shutil
 import zipfile
 import urllib
 import subprocess
-import datetime  # ✅ पूरा datetime मॉड्यूल
+import datetime
 from base64 import b64encode, b64decode
 from subprocess import getstatusoutput
 
@@ -55,7 +55,7 @@ from pyrogram.errors import (
     RPCError
 )
 from pyrogram.errors.exceptions.bad_request_400 import MessageNotModified
-from pyrogram.enums import ParseMode  # ✅ यह ज़रूरी है
+from pyrogram.enums import ParseMode  # ✅ ज़रूरी
 
 # 🧠 Bot Modules
 import auth
@@ -850,7 +850,7 @@ async def txt_handler(bot: Client, m: Message):
             else:
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
 
-            # ============ नया कैप्शन (Blockquote + Index + Live Time) ============
+            # ============ नया कैप्शन (सिर्फ Subject Blockquote में, Topic Title में) ============
             import re
             subject = "MATHEMATICS"
             topic = name1
@@ -877,19 +877,18 @@ async def txt_handler(bot: Client, m: Message):
                     subject = parts[0].strip()
                     topic = parts[1].strip()
 
-            # Live India Time – datetime.datetime.now() के साथ
+            # Live India Time
             now = datetime.datetime.now(INDIA_TZ)
             current_datetime = now.strftime("%A, %d %B %Y • %I:%M %p")
             current_date = now.strftime("%d-%m-%Y")
 
-            # Video Caption
+            # Video Caption – Blockquote में सिर्फ Subject, Title में सिर्फ Topic + Date
             cc = (
                 f"——— ✦ {count} ✦ ———\n\n"
                 f"<blockquote>"
-                f"⋅ ─  📚 {subject}  ─ ⋅\n"
-                f"⋅ ─  ✨ {topic}  ─ ⋅"
+                f"⋅ ─  📚 {subject}  ─ ⋅"
                 f"</blockquote>\n\n"
-                f"🎞️ Title: {name1} [{current_date}]\n"
+                f"🎞️ Title: {topic} [{current_date}]\n"
                 f"├── Extention: {CR}.mp4\n"
                 f"├── Resolution: {res}\n\n"
                 f"📚 Course: {b_name}\n\n"
@@ -898,14 +897,13 @@ async def txt_handler(bot: Client, m: Message):
                 f"<blockquote>📅 {current_datetime}</blockquote>"
             )
 
-            # PDF Caption
+            # PDF Caption – Blockquote में सिर्फ Subject, Title में सिर्फ Topic + Date
             cc1 = (
                 f"——— ✦ {count} ✦ ———\n\n"
                 f"<blockquote>"
-                f"⋅ ─  📚 {subject}  ─ ⋅\n"
-                f"⋅ ─  ✨ {topic}  ─ ⋅"
+                f"⋅ ─  📚 {subject}  ─ ⋅"
                 f"</blockquote>\n\n"
-                f"📄 Title: {name1} [{current_date}]\n"
+                f"📄 Title: {topic} [{current_date}]\n"
                 f"├── Extention: {CR}.pdf\n\n"
                 f"📚 Course: {b_name}\n\n"
                 f"🌟 Extracted By: {CR}\n"
