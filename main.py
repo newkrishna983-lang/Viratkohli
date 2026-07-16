@@ -73,6 +73,10 @@ pyromod.listen.Client.listen = pyromod.listen.listen
 
 from db import db
 
+# ---------- INDIA TIMEZONE FIX (Live Kolkata/IST) ----------
+INDIA_TZ = pytz.timezone('Asia/Kolkata')
+# ----------------------------------------------------------
+
 auto_flags = {}
 auto_clicked = False
 
@@ -840,7 +844,7 @@ async def txt_handler(bot: Client, m: Message):
             else:
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
 
-            # ============ नया कैप्शन फॉर्मेट ============
+            # ============ नया कैप्शन फॉर्मेट (LIVE INDIA TIME) ============
             subject = "MATHEMATICS"
             topic = name1
             if ":" in name1:
@@ -852,8 +856,9 @@ async def txt_handler(bot: Client, m: Message):
                 subject = parts[0].strip()
                 topic = parts[1].strip()
             
-            current_datetime = datetime.now().strftime("%A, %d %B %Y • %I:%M %p")
-            current_date = datetime.now().strftime("%d-%m-%Y")
+            # ----- LIVE INDIA TIME (IST / Kolkata) -----
+            current_datetime = datetime.now(INDIA_TZ).strftime("%A, %d %B %Y • %I:%M %p")
+            current_date = datetime.now(INDIA_TZ).strftime("%d-%m-%Y")
 
             # ----- Video (cc) -----
             cc = (
