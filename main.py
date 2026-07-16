@@ -10,7 +10,7 @@ import shutil
 import zipfile
 import urllib
 import subprocess
-from datetime import datetime, timedelta
+import datetime
 from base64 import b64encode, b64decode
 from subprocess import getstatusoutput
 
@@ -857,8 +857,8 @@ async def txt_handler(bot: Client, m: Message):
                 topic = parts[1].strip()
             
             # ----- LIVE INDIA TIME (IST / Kolkata) -----
-            current_datetime = datetime.now(INDIA_TZ).strftime("%A, %d %B %Y • %I:%M %p")
-            current_date = datetime.now(INDIA_TZ).strftime("%d-%m-%Y")
+            current_datetime = datetime.datetime.now(INDIA_TZ).strftime("%A, %d %B %Y • %I:%M %p")
+current_date = datetime.datetime.now(INDIA_TZ).strftime("%d-%m-%Y")
 
             # ----- Video (cc) -----
             cc = (
