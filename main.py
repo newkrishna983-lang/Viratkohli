@@ -882,6 +882,55 @@ async def txt_handler(bot: Client, m: Message):
             else:
                 cmd = f'yt-dlp -f "{ytf}" "{url}" -o "{name}.mp4"'
 
+            # ============ नया कैप्शन फॉर्मेट (Blockquote + Index + DateTime) ============
+            # name1 से Subject और Topic अलग करें
+            subject = "MATHEMATICS"  # डिफ़ॉल्ट
+            topic = name1
+            if ":" in name1:
+                parts = name1.split(":", 1)
+                subject = parts[0].strip()
+                topic = parts[1].strip()
+            elif "-" in name1:
+                parts = name1.split("-", 1)
+                subject = parts[0].strip()
+                topic = parts[1].strip()
+            
+            # करंट डेट और टाइम (जैसा फोटो में है)
+            current_datetime = datetime.now().strftime("%A, %d %B %Y • %I:%M %p")
+            current_date = datetime.now().strftime("%d-%m-%Y")
+
+            # ----- Video (cc) -----
+            cc = (
+                f"——— ✦ {count} ✦ ———\n\n"
+                f"<blockquote>"
+                f"⋅ ─  📚 {subject}  ─ ⋅\n"
+                f"⋅ ─  ✨ {topic}  ─ ⋅"
+                f"</blockquote>\n\n"
+                f"🎞️ Title: {name1} [{current_date}]\n"
+                f"├── Extention: {CR}.mp4\n"
+                f"├── Resolution: {res}\n\n"
+                f"📚 Course: {b_name}\n\n"
+                f"🌟 Extracted By: {CR}\n"
+                f"━━━━━━━━━━━━━━━━━━━\n"
+                f"<blockquote>📅 {current_datetime}</blockquote>"
+            )
+
+            # ----- PDF / Document (cc1) -----
+            cc1 = (
+                f"——— ✦ {count} ✦ ———\n\n"
+                f"<blockquote>"
+                f"⋅ ─  📚 {subject}  ─ ⋅\n"
+                f"⋅ ─  ✨ {topic}  ─ ⋅"
+                f"</blockquote>\n\n"
+                f"📄 Title: {name1} [{current_date}]\n"
+                f"├── Extention: {CR}.pdf\n\n"
+                f"📚 Course: {b_name}\n\n"
+                f"🌟 Extracted By: {CR}\n"
+                f"━━━━━━━━━━━━━━━━━━━\n"
+                f"<blockquote>📅 {current_datetime}</blockquote>"
+            )
+            # ========================================================================
+
             try:
                 cc = (
     f"<b>🏷️ Iɴᴅᴇx ID  :</b> {str(count).zfill(3)}\n\n"
@@ -1038,10 +1087,6 @@ async def txt_handler(bot: Client, m: Message):
                     count += 1
                     await asyncio.sleep(1)
                     continue
-
-     
-
-            
 
                 else:
                     Show = f"<i><b>📥 Fast Video Downloading</b></i>\n<blockquote><b>{str(count).zfill(3)}) {name1}</b></blockquote>"
