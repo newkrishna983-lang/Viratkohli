@@ -23,7 +23,7 @@ from base64 import b64decode
 import math
 import m3u8
 from urllib.parse import urljoin
-from vars import *  # Add this import
+from vars import *
 from db import Database
 
 
@@ -42,7 +42,7 @@ def split_large_video(file_path, max_size_mb=1900):
     max_bytes = max_size_mb * 1024 * 1024
 
     if size_bytes <= max_bytes:
-        return [file_path]  # No splitting needed
+        return [file_path]
 
     duration = get_duration(file_path)
     parts = ceil(size_bytes / max_bytes)
@@ -396,7 +396,7 @@ async def download_video(url, cmd, name):
 
 async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, channel_id, watermark="𝐈𝐓'𝐬𝐆𝐎𝐋𝐔", topic_thread_id: int = None):
     try:
-        temp_thumb = None  # ✅ Ensure this is always defined for later cleanup
+        temp_thumb = None
 
         thumbnail = thumb
         if thumb in ["/d", "no"] or not os.path.exists(thumb):
@@ -451,10 +451,10 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
             
             thumbnail = temp_thumb if os.path.exists(temp_thumb) else None
 
-        await prog.delete(True)  # ⏳ Remove previous progress message
+        await prog.delete(True)
 
-        reply1 = await bot.send_message(channel_id, f" **Uploading Video:**\n<blockquote>{name}</blockquote>")
-        reply = await m.reply_text(f"🖼 **Generating Thumbnail:**\n<blockquote>{name}</blockquote>")
+        reply1 = await bot.send_message(channel_id, f" **Uploading Video:**\n<blockquote>{name}</blockquote>", parse_mode="html")
+        reply = await m.reply_text(f"🖼 **Generating Thumbnail:**\n<blockquote>{name}</blockquote>", parse_mode="html")
 
         file_size_mb = os.path.getsize(filename) / (1024 * 1024)
         notify_split = None
@@ -476,7 +476,8 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
                     thumb=thumbnail,
                     duration=dur,
                     progress=progress_bar,
-                    progress_args=(reply, start_time)
+                    progress_args=(reply, start_time),
+                    parse_mode="html"
                 )
             except Exception:
                 sent_message = await bot.send_document(
@@ -484,7 +485,8 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
                     document=filename,
                     caption=cc,
                     progress=progress_bar,
-                    progress_args=(reply, start_time)
+                    progress_args=(reply, start_time),
+                    parse_mode="html"
                 )
 
             # ✅ Cleanup
@@ -497,7 +499,8 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
             # ⚠️ Notify about splitting
             notify_split = await m.reply_text(
                 f"⚠️ The video is larger than 2GB ({human_readable_size(os.path.getsize(filename))})\n"
-                f"⏳ Splitting into parts before upload..."
+                f"⏳ Splitting into parts before upload...",
+                parse_mode="html"
             )
 
             parts = split_large_video(filename)
@@ -511,7 +514,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
                     part_caption = f"{cc}\n\n📦 Part {part_num} of {total_parts}"
                     part_filename = f"{name}_Part{part_num}.mp4"
 
-                    upload_msg = await m.reply_text(f"📤 Uploading Part {part_num}/{total_parts}...")
+                    upload_msg = await m.reply_text(f"📤 Uploading Part {part_num}/{total_parts}...", parse_mode="html")
 
                     try:
                         msg_obj = await bot.send_video(
@@ -525,7 +528,8 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
                             thumb=thumbnail,
                             duration=part_dur,
                             progress=progress_bar,
-                            progress_args=(upload_msg, time.time())
+                            progress_args=(upload_msg, time.time()),
+                            parse_mode="html"
                         )
                         if first_part_message is None:
                             first_part_message = msg_obj
@@ -536,7 +540,8 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
                             caption=part_caption,
                             file_name=part_filename,
                             progress=progress_bar,
-                            progress_args=(upload_msg, time.time())
+                            progress_args=(upload_msg, time.time()),
+                            parse_mode="html"
                         )
                         if first_part_message is None:
                             first_part_message = msg_obj
@@ -550,7 +555,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
 
             # ✅ Final messages
             if len(parts) > 1:
-                await m.reply_text("✅ Large video successfully uploaded in multiple parts!")
+                await m.reply_text("✅ Large video successfully uploaded in multiple parts!", parse_mode="html")
 
             # Cleanup after split
             await reply.delete(True)
