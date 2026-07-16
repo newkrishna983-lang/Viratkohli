@@ -23,9 +23,9 @@ from base64 import b64decode
 import math
 import m3u8
 from urllib.parse import urljoin
-from vars import *  # Add this import
+from vars import *
 from db import Database
-from pyrogram.enums import ParseMode  # ✅ Import ParseMode
+from pyrogram.enums import ParseMode
 
 
 
@@ -43,7 +43,7 @@ def split_large_video(file_path, max_size_mb=1900):
     max_bytes = max_size_mb * 1024 * 1024
 
     if size_bytes <= max_bytes:
-        return [file_path]  # No splitting needed
+        return [file_path]
 
     duration = get_duration(file_path)
     parts = ceil(size_bytes / max_bytes)
@@ -397,7 +397,7 @@ async def download_video(url, cmd, name):
 
 async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, channel_id, watermark="𝐈𝐓'𝐬𝐆𝐎𝐋𝐔", topic_thread_id: int = None):
     try:
-        temp_thumb = None  # ✅ Ensure this is always defined for later cleanup
+        temp_thumb = None
 
         thumbnail = thumb
         if thumb in ["/d", "no"] or not os.path.exists(thumb):
@@ -452,7 +452,7 @@ async def send_vid(bot: Client, m: Message, cc, filename, thumb, name, prog, cha
             
             thumbnail = temp_thumb if os.path.exists(temp_thumb) else None
 
-        await prog.delete(True)  # ⏳ Remove previous progress message
+        await prog.delete(True)
 
         reply1 = await bot.send_message(channel_id, f" **Uploading Video:**\n<blockquote>{name}</blockquote>", parse_mode=ParseMode.HTML)
         reply = await m.reply_text(f"🖼 **Generating Thumbnail:**\n<blockquote>{name}</blockquote>", parse_mode=ParseMode.HTML)
