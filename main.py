@@ -10,7 +10,7 @@ import shutil
 import zipfile
 import urllib
 import subprocess
-from datetime import datetime, timedelta
+import datetime  # ✅ पूरा datetime मॉड्यूल
 from base64 import b64encode, b64decode
 from subprocess import getstatusoutput
 
@@ -55,7 +55,7 @@ from pyrogram.errors import (
     RPCError
 )
 from pyrogram.errors.exceptions.bad_request_400 import MessageNotModified
-from pyrogram.enums import ParseMode  # ✅ Import ParseMode
+from pyrogram.enums import ParseMode  # ✅ यह ज़रूरी है
 
 # 🧠 Bot Modules
 import auth
@@ -877,9 +877,10 @@ async def txt_handler(bot: Client, m: Message):
                     subject = parts[0].strip()
                     topic = parts[1].strip()
 
-            # Live India Time
-            current_datetime = datetime.now(INDIA_TZ).strftime("%A, %d %B %Y • %I:%M %p")
-            current_date = datetime.now(INDIA_TZ).strftime("%d-%m-%Y")
+            # Live India Time – datetime.datetime.now() के साथ
+            now = datetime.datetime.now(INDIA_TZ)
+            current_datetime = now.strftime("%A, %d %B %Y • %I:%M %p")
+            current_date = now.strftime("%d-%m-%Y")
 
             # Video Caption
             cc = (
