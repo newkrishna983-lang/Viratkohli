@@ -208,7 +208,7 @@ def generate_html(file_name, videos, pdfs, others):
         <div class="other-list">{other_links}</div>
     </div>
 
-    <footer>Extracted By ⌯ FʀᴏɴᴛMᴀɴ | ×͜× |</footer>
+    <footer>Extracted By •Ɱའ★Krΐຮhήส•❤️‍🔥</footer>
 
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script>
